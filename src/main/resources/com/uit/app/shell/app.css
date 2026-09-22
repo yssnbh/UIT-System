@@ -1,0 +1,88 @@
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+}
+
+.shell {
+    -fx-background-color: #eef1f4;
+}
+
+.sidebar {
+    -fx-background-color: #1b2430;
+    -fx-padding: 22 14 14 14;
+    -fx-spacing: 8;
+}
+
+.brand {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 8 12 8;
+}
+
+.sidebar-caption {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 11px;
+    -fx-padding: 0 8 4 8;
+}
+
+.signed-in {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 12px;
+    -fx-padding: 14 8 6 8;
+}
+
+.sidebar .list-view {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-control-inner-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.sidebar .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #d5dde6;
+    -fx-padding: 0 12 0 12;
+    -fx-background-radius: 8;
+}
+
+.sidebar .list-cell:hover {
+    -fx-background-color: #243140;
+}
+
+.sidebar .list-cell:selected,
+.sidebar .list-cell:selected:hover {
+    -fx-background-color: #334155;
+    -fx-text-fill: #ffffff;
+}
+
+.workspace {
+    -fx-background-color: #eef1f4;
+}
+
+.screen-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+    -fx-padding: 22 28 0 28;
+}
+
+.content {
+    -fx-padding: 16 28 28 28;
+}
+
+.page {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 24;
+    -fx-spacing: 8;
+}
+
+.page-message {
+    -fx-text-fill: #475569;
+    -fx-font-size: 15px;
+}

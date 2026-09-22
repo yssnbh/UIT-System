@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox styleClass="page" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml">
+    <Label fx:id="message" styleClass="page-message" wrapText="true"/>
+</VBox>

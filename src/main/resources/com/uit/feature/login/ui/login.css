@@ -1,0 +1,178 @@
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+}
+
+.login-root {
+    -fx-background-color: #e7edf3;
+}
+
+.login-hero {
+    -fx-background-color: #1b2430;
+    -fx-padding: 56 48 40 48;
+}
+
+.hero-mark {
+    -fx-background-color: #2a3848;
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-padding: 0;
+    -fx-min-width: 52px;
+    -fx-min-height: 52px;
+    -fx-max-width: 52px;
+    -fx-max-height: 52px;
+    -fx-background-radius: 16px;
+}
+
+.hero-title {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 34px;
+    -fx-font-weight: bold;
+}
+
+.hero-rule {
+    -fx-background-color: #d6b48a;
+    -fx-min-width: 48px;
+    -fx-max-width: 48px;
+    -fx-min-height: 3px;
+    -fx-max-height: 3px;
+    -fx-background-radius: 2px;
+}
+
+.hero-copy {
+    -fx-text-fill: #d5dde6;
+    -fx-font-size: 16px;
+}
+
+.hero-note {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 13px;
+}
+
+.login-panel {
+    -fx-background-color: #e7edf3;
+    -fx-padding: 32;
+}
+
+.login-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 18px;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 18px;
+    -fx-border-width: 1;
+    -fx-padding: 36 36 32 36;
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.08), 28, 0, 0, 10);
+}
+
+.form-title {
+    -fx-text-fill: #0f172a;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.form-subtitle {
+    -fx-text-fill: #64748b;
+    -fx-font-size: 14px;
+}
+
+.field-label {
+    -fx-text-fill: #334155;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.form-error {
+    -fx-background-color: #fef2f2;
+    -fx-text-fill: #b91c1c;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 12;
+    -fx-font-size: 13px;
+}
+
+.login-card .text-field,
+.login-card .input {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #d6dee8;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 12 14;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #94a3b8;
+    -fx-focus-color: #1e3a5f;
+    -fx-faint-focus-color: transparent;
+}
+
+.login-card .text-field:focused,
+.login-card .input:focused {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #1e3a5f;
+}
+
+.primary-button {
+    -fx-background-color: #1e3a5f;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px;
+    -fx-padding: 12 16;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #27486f;
+}
+
+.primary-button:pressed {
+    -fx-background-color: #17304f;
+}
+
+.google-button {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d6dee8;
+    -fx-border-width: 1;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 16;
+    -fx-cursor: hand;
+}
+
+.google-button:hover {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #c5d0dc;
+}
+
+.password-box .text-field {
+    -fx-padding: 12 72 12 14;
+}
+
+.password-box .text-button {
+    -fx-padding: 8 16 8 10;
+}
+
+.text-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #1e3a5f;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 10;
+    -fx-cursor: hand;
+    -fx-min-width: 64px;
+}
+
+.text-button:hover {
+    -fx-text-fill: #27486f;
+}
+
+.or-label {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 12px;
+}
+
+.or-row .separator .line {
+    -fx-border-color: #e2e8f0;
+}

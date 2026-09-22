@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="720.0" prefWidth="1100.0" styleClass="shell" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml">
+    <left>
+        <VBox prefWidth="248.0" styleClass="sidebar">
+            <children>
+                <Label styleClass="brand" text="UIT System"/>
+                <Label styleClass="sidebar-caption" text="Sections"/>
+                <ListView fx:id="navigation" VBox.vgrow="ALWAYS"/>
+                <Label fx:id="signedIn" styleClass="signed-in" wrapText="true"/>
+            </children>
+        </VBox>
+    </left>
+    <center>
+        <VBox styleClass="workspace">
+            <children>
+                <Label fx:id="screenTitle" styleClass="screen-title"/>
+                <StackPane fx:id="content" styleClass="content" VBox.vgrow="ALWAYS"/>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>
