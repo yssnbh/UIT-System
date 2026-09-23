@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox styleClass="page" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml">
+    <TabPane styleClass="settings-tabs" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+        <tabs>
+            <Tab text="Apogee" closable="false">
+                <content>
+                    <ScrollPane fitToWidth="true" styleClass="settings-scroll">
+                        <content>
+                            <VBox spacing="18.0" styleClass="settings-form">
+                                <GridPane hgap="28.0" styleClass="settings-grid" vgap="16.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints minWidth="150.0" prefWidth="160.0"/>
+                                        <ColumnConstraints hgrow="ALWAYS" minWidth="180.0"/>
+                                        <ColumnConstraints minWidth="220.0" prefWidth="280.0"/>
+                                    </columnConstraints>
+                                    <Label styleClass="settings-section-title" text="Server" GridPane.rowSpan="6" GridPane.valignment="TOP"/>
+
+                                    <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                                        <Label styleClass="field-label" text="Server IP"/>
+                                        <Label styleClass="field-subtitle" text="Address of the Apogee server" wrapText="true"/>
+                                    </VBox>
+                                    <TextField fx:id="serverIp" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+
+                                    <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                        <Label styleClass="field-label" text="Port"/>
+                                        <Label styleClass="field-subtitle" text="Port used to reach that server" wrapText="true"/>
+                                    </VBox>
+                                    <TextField fx:id="port" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+
+                                    <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                        <Label styleClass="field-label" text="Root username"/>
+                                        <Label styleClass="field-subtitle" text="Account used to sign in to the server" wrapText="true"/>
+                                    </VBox>
+                                    <TextField fx:id="rootUsername" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+
+                                    <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                        <Label styleClass="field-label" text="Root password"/>
+                                        <Label styleClass="field-subtitle" text="Password for the root account" wrapText="true"/>
+                                    </VBox>
+                                    <PasswordField fx:id="rootPassword" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+
+                                    <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                                        <Label styleClass="field-label" text="Oracle username"/>
+                                        <Label styleClass="field-subtitle" text="Account used for Oracle on the server" wrapText="true"/>
+                                    </VBox>
+                                    <TextField fx:id="oracleUsername" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+
+                                    <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                                        <Label styleClass="field-label" text="Oracle password"/>
+                                        <Label styleClass="field-subtitle" text="Password for the Oracle account" wrapText="true"/>
+                                    </VBox>
+                                    <PasswordField fx:id="oraclePassword" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
+                                </GridPane>
+
+                                <Separator styleClass="settings-separator"/>
+
+                                <GridPane hgap="28.0" styleClass="settings-grid" vgap="16.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints minWidth="150.0" prefWidth="160.0"/>
+                                        <ColumnConstraints hgrow="ALWAYS" minWidth="180.0"/>
+                                        <ColumnConstraints minWidth="220.0" prefWidth="280.0"/>
+                                    </columnConstraints>
+                                    <Label styleClass="settings-section-title" text="Database" GridPane.rowSpan="3" GridPane.valignment="TOP"/>
+
+                                    <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                                        <Label styleClass="field-label" text="Database IP"/>
+                                        <Label styleClass="field-subtitle" text="Address of the Oracle database" wrapText="true"/>
+                                    </VBox>
+                                    <TextField fx:id="databaseIp" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+
+                                    <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                        <Label styleClass="field-label" text="Database port"/>
+                                        <Label styleClass="field-subtitle" text="Port of the database listener" wrapText="true"/>
+                                    </VBox>
+                                    <TextField fx:id="databasePort" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+
+                                    <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                        <Label styleClass="field-label" text="Database SID"/>
+                                        <Label styleClass="field-subtitle" text="Oracle system identifier" wrapText="true"/>
+                                    </VBox>
+                                    <TextField fx:id="databaseSid" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+                                </GridPane>
+
+                                <Separator styleClass="settings-separator"/>
+
+                                <GridPane hgap="28.0" styleClass="settings-grid" vgap="16.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints minWidth="150.0" prefWidth="160.0"/>
+                                        <ColumnConstraints hgrow="ALWAYS" minWidth="180.0"/>
+                                        <ColumnConstraints minWidth="220.0" prefWidth="280.0"/>
+                                    </columnConstraints>
+                                    <Label styleClass="settings-section-title" text="Database access" GridPane.rowSpan="5" GridPane.valignment="TOP"/>
+
+                                    <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                                        <Label styleClass="field-label" text="Apogee password"/>
+                                        <Label styleClass="field-subtitle" text="Password for the APOGEE account" wrapText="true"/>
+                                    </VBox>
+                                    <PasswordField fx:id="apogeeUser" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+
+                                    <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                        <Label styleClass="field-label" text="Admin password"/>
+                                        <Label styleClass="field-subtitle" text="Password for the ADMIN account" wrapText="true"/>
+                                    </VBox>
+                                    <PasswordField fx:id="adminUser" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+
+                                    <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                        <Label styleClass="field-label" text="Sys password"/>
+                                        <Label styleClass="field-subtitle" text="Password for the SYS account, used with SYSDBA" wrapText="true"/>
+                                    </VBox>
+                                    <PasswordField fx:id="sysUser" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+
+                                    <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                        <Label styleClass="field-label" text="System password"/>
+                                        <Label styleClass="field-subtitle" text="Password for the SYSTEM account" wrapText="true"/>
+                                    </VBox>
+                                    <PasswordField fx:id="systemUser" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+
+                                    <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                                        <Label styleClass="field-label" text="Sysman password"/>
+                                        <Label styleClass="field-subtitle" text="Password for the SYSMAN account" wrapText="true"/>
+                                    </VBox>
+                                    <PasswordField fx:id="sysmanUser" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+                                </GridPane>
+
+                                <GridPane hgap="28.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints minWidth="150.0" prefWidth="160.0"/>
+                                        <ColumnConstraints hgrow="ALWAYS" minWidth="180.0"/>
+                                        <ColumnConstraints minWidth="220.0" prefWidth="280.0"/>
+                                    </columnConstraints>
+                                    <HBox alignment="CENTER_LEFT" spacing="12.0" GridPane.columnIndex="2">
+                                        <Button onAction="#save" styleClass="primary-button" text="Save"/>
+                                        <Label fx:id="status" styleClass="settings-status"/>
+                                    </HBox>
+                                </GridPane>
+                                <padding>
+                                    <Insets bottom="4.0" top="4.0"/>
+                                </padding>
+                            </VBox>
+                        </content>
+                    </ScrollPane>
+                </content>
+            </Tab>
+        </tabs>
+    </TabPane>
+</VBox>

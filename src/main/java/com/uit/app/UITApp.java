@@ -22,16 +22,18 @@ import java.util.Objects;
 
 public final class UITApp extends Application {
 
+    private SqliteDatabase database;
+
     @Override
     public void start(Stage stage) {
-        SqliteDatabase database = SqliteDatabase.openDefault();
+        database = SqliteDatabase.openDefault();
         UserRepository users = new SqliteUserRepository(database);
         GoogleOAuthClient google = new GoogleOAuthClient(GoogleAuthConfig.load());
         new LoginWindow(users, google).open(stage, user -> openWorkspace(stage, user));
     }
 
     private void openWorkspace(Stage stage, User user) {
-        AppContext context = new AppContext(user.username());
+        AppContext context = new AppContext(user.username(), database);
         Parent shell = loadShell(context);
         Scene scene = new Scene(shell);
         scene.getStylesheets().add(stylesheet());

@@ -9,7 +9,19 @@
 
 .login-hero {
     -fx-background-color: #1b2430;
+    -fx-background-image: url("login_bg.png");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+}
+
+.hero-shade {
+    -fx-background-color: rgba(7, 20, 45, 0.48);
+}
+
+.hero-content {
     -fx-padding: 56 48 40 48;
+    -fx-background-color: transparent;
 }
 
 .hero-mark {
@@ -42,12 +54,12 @@
 }
 
 .hero-copy {
-    -fx-text-fill: #d5dde6;
+    -fx-text-fill: #f8fafc;
     -fx-font-size: 16px;
 }
 
 .hero-note {
-    -fx-text-fill: #94a3b8;
+    -fx-text-fill: #e2e8f0;
     -fx-font-size: 13px;
 }
 

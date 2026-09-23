@@ -11,16 +11,19 @@
 <?import javafx.scene.layout.VBox?>
 
 <HBox prefHeight="680.0" prefWidth="1040.0" styleClass="login-root" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml">
-    <VBox maxHeight="Infinity" maxWidth="460.0" minWidth="360.0" prefWidth="420.0" spacing="18.0" styleClass="login-hero">
-        <Label styleClass="hero-mark" text="U"/>
-        <VBox spacing="14.0">
-            <Label styleClass="hero-title" text="UIT System"/>
-            <Region styleClass="hero-rule"/>
-            <Label maxWidth="Infinity" styleClass="hero-copy" text="Sign in to open your workspace." wrapText="true"/>
+    <StackPane maxHeight="Infinity" maxWidth="460.0" minWidth="360.0" prefWidth="420.0" styleClass="login-hero">
+        <Region styleClass="hero-shade"/>
+        <VBox maxHeight="Infinity" spacing="18.0" styleClass="hero-content">
+            <Label styleClass="hero-mark" text="U"/>
+            <VBox spacing="14.0">
+                <Label styleClass="hero-title" text="UIT System"/>
+                <Region styleClass="hero-rule"/>
+                <Label maxWidth="Infinity" styleClass="hero-copy" text="Sign in to open your workspace." wrapText="true"/>
+            </VBox>
+            <Region VBox.vgrow="ALWAYS"/>
+            <Label maxWidth="Infinity" styleClass="hero-note" text="Use your username and password, or Google if that email is registered." wrapText="true"/>
         </VBox>
-        <Region VBox.vgrow="ALWAYS"/>
-        <Label maxWidth="Infinity" styleClass="hero-note" text="Use your username and password, or Google if that email is registered." wrapText="true"/>
-    </VBox>
+    </StackPane>
     <StackPane maxHeight="Infinity" styleClass="login-panel" HBox.hgrow="ALWAYS">
         <VBox maxHeight="-Infinity" maxWidth="440.0" prefWidth="440.0" spacing="16.0" styleClass="login-card">
             <VBox spacing="6.0">

@@ -50,7 +50,7 @@ public final class SqliteDatabase implements AutoCloseable {
         }
     }
 
-    Connection connection() {
+    public Connection connection() {
         return connection;
     }
 
