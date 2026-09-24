@@ -21,6 +21,12 @@ public final class SqliteApogeeSettingsRepository implements ApogeeSettingsRepos
 
     @Override
     public ApogeeSettings load() {
+        synchronized (database.connection()) {
+            return loadSettings();
+        }
+    }
+
+    private ApogeeSettings loadSettings() {
         String sql = """
                 SELECT server_ip, port, root_username, root_password, oracle_username, oracle_password,
                        apogee_user, admin_user, sys_user, system_user, sysman_user,

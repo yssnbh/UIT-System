@@ -5,6 +5,16 @@ import com.uit.app.navigation.Screen;
 import com.uit.feature.apogee.application.LockApogeeAccounts;
 import com.uit.feature.apogee.application.UnlockApogeeAccounts;
 import com.uit.feature.apogee.infrastructure.OracleApogeeDatabase;
+import com.uit.feature.apogee.job.CheckServerSpace;
+import com.uit.feature.apogee.job.CheckTablespaces;
+import com.uit.feature.apogee.job.JdbcOracleReader;
+import com.uit.feature.apogee.job.JobScheduler;
+import com.uit.feature.apogee.job.SqlitePartitionRuleRepository;
+import com.uit.feature.apogee.job.SqliteJobScheduleRepository;
+import com.uit.feature.apogee.job.SqliteTablespaceRuleRepository;
+import com.uit.feature.apogee.job.SshCommands;
+import com.uit.feature.apogee.job.SqliteJobResultRepository;
+import com.uit.feature.apogee.ui.JobsViewModel;
 import com.uit.feature.apogee.ui.ApogeeScreen;
 import com.uit.feature.home.application.ShowHome;
 import com.uit.feature.home.ui.HomeScreen;
@@ -27,10 +37,13 @@ public final class AppContext {
     private final String signedInUsername;
     private final EventBus eventBus;
     private final Navigator navigator;
+    private final JobScheduler jobScheduler;
 
     public AppContext(String signedInUsername, SqliteDatabase database) {
         this.signedInUsername = signedInUsername;
         eventBus = new EventBus();
+        jobScheduler = jobs(database);
+        jobScheduler.start();
         navigator = new Navigator(List.of(homeScreen(), apogeeScreen(database), settingsScreen(database)));
     }
 
@@ -51,11 +64,32 @@ public final class AppContext {
         return new HomeScreen(viewModel);
     }
 
-    private static Screen apogeeScreen(SqliteDatabase database) {
+    private Screen apogeeScreen(SqliteDatabase database) {
         SqliteApogeeSettingsRepository repository = new SqliteApogeeSettingsRepository(database);
         UnlockApogeeAccounts unlock = new UnlockApogeeAccounts(repository, new OracleApogeeDatabase());
         LockApogeeAccounts lock = new LockApogeeAccounts(repository, new OracleApogeeDatabase());
-        return new ApogeeScreen(unlock, lock);
+        SqliteJobScheduleRepository schedules = new SqliteJobScheduleRepository(database);
+        JobsViewModel jobs = new JobsViewModel(
+                jobScheduler.scripts(),
+                new SqliteJobResultRepository(database),
+                schedules,
+                new SqliteTablespaceRuleRepository(database),
+                new SqlitePartitionRuleRepository(database),
+                jobScheduler
+        );
+        return new ApogeeScreen(unlock, lock, jobs, eventBus);
+    }
+
+    private JobScheduler jobs(SqliteDatabase database) {
+        SqliteApogeeSettingsRepository repository = new SqliteApogeeSettingsRepository(database);
+        SqliteJobResultRepository results = new SqliteJobResultRepository(database);
+        SqliteJobScheduleRepository schedules = new SqliteJobScheduleRepository(database);
+        SqliteTablespaceRuleRepository tablespaceRules = new SqliteTablespaceRuleRepository(database);
+        SqlitePartitionRuleRepository partitionRules = new SqlitePartitionRuleRepository(database);
+        return new JobScheduler(List.of(
+                new CheckServerSpace(new SshCommands(), partitionRules),
+                new CheckTablespaces(new JdbcOracleReader(), tablespaceRules)
+        ), repository, results, schedules, eventBus);
     }
 
     private static Screen settingsScreen(SqliteDatabase database) {

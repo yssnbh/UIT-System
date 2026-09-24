@@ -60,6 +60,43 @@ public enum ApogeeQueries {
     ),
 
     /**
+     * Reads each data file and temp file, not the tablespace total.
+     * Columns are tablespace, file name, used megabytes, current size megabytes, and free megabytes.
+     * Size is the file size now, not the autoextend maximum.
+     */
+    TABLESPACE_USAGE(
+            "tablespace-usage",
+            """
+            SELECT tablespace_name, file_name,
+                   ROUND(used_bytes / 1024 / 1024, 0),
+                   ROUND(size_bytes / 1024 / 1024, 0),
+                   ROUND(free_bytes / 1024 / 1024, 0)
+            FROM (
+                SELECT d.tablespace_name,
+                       d.file_name,
+                       d.bytes - NVL(f.free_bytes, 0) AS used_bytes,
+                       d.bytes AS size_bytes,
+                       NVL(f.free_bytes, 0) AS free_bytes
+                FROM dba_data_files d
+                LEFT JOIN (
+                    SELECT file_id, SUM(bytes) free_bytes
+                    FROM dba_free_space
+                    GROUP BY file_id
+                ) f ON f.file_id = d.file_id
+                UNION ALL
+                SELECT t.tablespace_name,
+                       t.file_name,
+                       NVL(h.bytes_used, 0),
+                       t.bytes,
+                       NVL(h.bytes_free, 0)
+                FROM dba_temp_files t
+                LEFT JOIN v$temp_space_header h ON h.file_id = t.file_id
+            )
+            ORDER BY tablespace_name, file_name
+            """
+    ),
+
+    /**
      * Saves the current transaction.
      */
     COMMIT(
