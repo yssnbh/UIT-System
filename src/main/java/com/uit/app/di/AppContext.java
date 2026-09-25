@@ -5,10 +5,13 @@ import com.uit.app.navigation.Screen;
 import com.uit.feature.apogee.application.LockApogeeAccounts;
 import com.uit.feature.apogee.application.UnlockApogeeAccounts;
 import com.uit.feature.apogee.infrastructure.OracleApogeeDatabase;
+import com.uit.feature.apogee.job.CheckExportDumps;
 import com.uit.feature.apogee.job.CheckServerSpace;
 import com.uit.feature.apogee.job.CheckTablespaces;
 import com.uit.feature.apogee.job.JdbcOracleReader;
 import com.uit.feature.apogee.job.JobScheduler;
+import com.uit.feature.apogee.job.SshDumpStore;
+import com.uit.feature.apogee.job.SqliteExportSettingsRepository;
 import com.uit.feature.apogee.job.SqlitePartitionRuleRepository;
 import com.uit.feature.apogee.job.SqliteJobScheduleRepository;
 import com.uit.feature.apogee.job.SqliteTablespaceRuleRepository;
@@ -75,6 +78,7 @@ public final class AppContext {
                 schedules,
                 new SqliteTablespaceRuleRepository(database),
                 new SqlitePartitionRuleRepository(database),
+                new SqliteExportSettingsRepository(database),
                 jobScheduler
         );
         return new ApogeeScreen(unlock, lock, jobs, eventBus);
@@ -88,7 +92,8 @@ public final class AppContext {
         SqlitePartitionRuleRepository partitionRules = new SqlitePartitionRuleRepository(database);
         return new JobScheduler(List.of(
                 new CheckServerSpace(new SshCommands(), partitionRules),
-                new CheckTablespaces(new JdbcOracleReader(), tablespaceRules)
+                new CheckTablespaces(new JdbcOracleReader(), tablespaceRules),
+                new CheckExportDumps(new SshDumpStore(), new SqliteExportSettingsRepository(database))
         ), repository, results, schedules, eventBus);
     }
 

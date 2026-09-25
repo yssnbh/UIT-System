@@ -11,4 +11,8 @@ public interface JobScript {
     ScriptSchedule schedule();
 
     JobExecution execute(ApogeeSettings settings);
+
+    default JobExecution execute(ApogeeSettings settings, JobProgress progress) {
+        return execute(settings);
+    }
 }

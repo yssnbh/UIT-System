@@ -6,6 +6,8 @@ import com.uit.feature.apogee.application.LockApogeeAccounts;
 import com.uit.feature.apogee.application.UnlockAccounts;
 import com.uit.feature.apogee.application.UnlockApogeeAccounts;
 import com.uit.feature.apogee.application.UnlockStatistics;
+import com.uit.feature.apogee.job.DownloadProgressed;
+import com.uit.feature.apogee.job.ExportSettings;
 import com.uit.feature.apogee.job.JobsUpdated;
 import com.uit.feature.apogee.job.ResultTone;
 import com.uit.feature.apogee.job.ScriptResultLine;
@@ -21,6 +23,7 @@ import javafx.scene.shape.Circle;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -203,12 +206,19 @@ public final class ApogeeController {
             private final Circle dot = new Circle(8);
             private final Label summary = new Label();
             private final HBox content = new HBox(10, details, dot, summary);
+            private final ProgressBar bar = new ProgressBar(0);
+            private final Label count = new Label();
+            private final HBox progressBox = new HBox(10, bar, count);
             private final VBox lines = new VBox(6);
             private final Popup tip = new Popup();
 
             {
                 setAlignment(Pos.CENTER_LEFT);
                 content.setAlignment(Pos.CENTER_LEFT);
+                progressBox.setAlignment(Pos.CENTER_LEFT);
+                bar.setPrefWidth(160);
+                count.getStyleClass().add("condition-label");
+                jobsViewModel.download().addListener((obs, oldValue, newValue) -> showResult(getItem()));
                 details.getStyleClass().add("job-action");
                 details.setFocusTraversable(false);
                 lines.setStyle("""
@@ -263,8 +273,22 @@ public final class ApogeeController {
                 summary.getStyleClass().removeAll("job-ok", "job-danger");
                 summary.getStyleClass().add(good ? "job-ok" : "job-danger");
                 summary.setText(good ? "Everything is good" : problems + (problems == 1 ? " problem" : " problems"));
-                setGraphic(content);
+                showResult(item);
                 applyRowHeight(getTableRow(), "result", 44);
+            }
+
+            private void showResult(JobRow item) {
+                if (item == null || getItem() != item) {
+                    return;
+                }
+                DownloadProgressed progress = jobsViewModel.download().get();
+                if (progress != null && item.scriptId().equals(progress.scriptId())) {
+                    bar.setProgress(progress.fraction());
+                    count.setText(progress.index() + " / " + progress.total());
+                    setGraphic(progressBox);
+                    return;
+                }
+                setGraphic(content);
             }
         });
         when.setPrefWidth(220);
@@ -307,7 +331,11 @@ public final class ApogeeController {
         jobs.setItems(jobsViewModel.rows());
         jobs.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         jobsViewModel.refresh();
-        events.subscribe(JobsUpdated.class, event -> Platform.runLater(jobsViewModel::refresh));
+        events.subscribe(DownloadProgressed.class, event -> Platform.runLater(() -> jobsViewModel.showDownload(event)));
+        events.subscribe(JobsUpdated.class, event -> Platform.runLater(() -> {
+            jobsViewModel.clearDownload();
+            jobsViewModel.refresh();
+        }));
     }
 
     private TableColumn<JobRow, JobRow> actionsColumn() {
@@ -344,12 +372,14 @@ public final class ApogeeController {
     private void editSchedule(JobRow item) {
         boolean tablespaces = "check-tablespaces".equals(item.scriptId());
         boolean serverSpace = "check-server-space".equals(item.scriptId());
+        boolean export = "check-export-dumps".equals(item.scriptId());
         ScheduleEditor.show(
                 jobs.getScene().getWindow(),
                 item.name(),
                 jobsViewModel.schedule(item.scriptId()),
                 tablespaces ? jobsViewModel.tablespaceRules() : null,
-                serverSpace ? jobsViewModel.partitionRules() : null
+                serverSpace ? jobsViewModel.partitionRules() : null,
+                export ? jobsViewModel.exportSettings() : null
         ).ifPresent(edit -> {
             jobsViewModel.saveSchedule(item.scriptId(), edit.times());
             if (edit.conditions() != null) {
@@ -357,6 +387,9 @@ public final class ApogeeController {
             }
             if (edit.partitions() != null) {
                 jobsViewModel.savePartitionRules(edit.partitions());
+            }
+            if (edit.export() != null) {
+                jobsViewModel.saveExportSettings(edit.export());
             }
         });
     }

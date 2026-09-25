@@ -78,7 +78,9 @@ public final class JobScheduler {
         try {
             JobExecution execution;
             try {
-                execution = script.execute(settings.load());
+                execution = script.execute(settings.load(), (index, total, fraction) ->
+                        events.publish(new DownloadProgressed(script.id(), index, total, fraction))
+                );
             } catch (RuntimeException exception) {
                 String message = exception.getMessage() == null ? "The script failed" : exception.getMessage();
                 execution = new JobExecution(false, List.of(new ScriptResultLine(ResultTone.DANGER, message)));

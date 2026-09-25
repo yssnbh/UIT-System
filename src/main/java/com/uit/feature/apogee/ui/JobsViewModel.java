@@ -1,5 +1,8 @@
 package com.uit.feature.apogee.ui;
 
+import com.uit.feature.apogee.job.DownloadProgressed;
+import com.uit.feature.apogee.job.ExportSettings;
+import com.uit.feature.apogee.job.ExportSettingsRepository;
 import com.uit.feature.apogee.job.PartitionRule;
 import com.uit.feature.apogee.job.PartitionRuleRepository;
 import com.uit.feature.apogee.job.JobResult;
@@ -12,6 +15,8 @@ import com.uit.feature.apogee.job.ScheduleSlot;
 import com.uit.feature.apogee.job.ScriptResultLine;
 import com.uit.feature.apogee.job.TablespaceRule;
 import com.uit.feature.apogee.job.TablespaceRuleRepository;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -28,7 +33,9 @@ public final class JobsViewModel {
     private final JobScheduleRepository schedules;
     private final TablespaceRuleRepository tablespaceRules;
     private final PartitionRuleRepository partitionRules;
+    private final ExportSettingsRepository exportSettings;
     private final JobScheduler scheduler;
+    private final ObjectProperty<DownloadProgressed> download = new SimpleObjectProperty<>();
     private final ObservableList<JobRow> rows = FXCollections.observableArrayList();
 
     public JobsViewModel(
@@ -37,6 +44,7 @@ public final class JobsViewModel {
             JobScheduleRepository schedules,
             TablespaceRuleRepository tablespaceRules,
             PartitionRuleRepository partitionRules,
+            ExportSettingsRepository exportSettings,
             JobScheduler scheduler
     ) {
         this.scripts = List.copyOf(scripts);
@@ -44,7 +52,28 @@ public final class JobsViewModel {
         this.schedules = schedules;
         this.tablespaceRules = tablespaceRules;
         this.partitionRules = partitionRules;
+        this.exportSettings = exportSettings;
         this.scheduler = scheduler;
+    }
+
+    public ObjectProperty<DownloadProgressed> download() {
+        return download;
+    }
+
+    public void showDownload(DownloadProgressed progress) {
+        download.set(progress);
+    }
+
+    public void clearDownload() {
+        download.set(null);
+    }
+
+    public ExportSettings exportSettings() {
+        return exportSettings.load();
+    }
+
+    public void saveExportSettings(ExportSettings settings) {
+        exportSettings.save(settings);
     }
 
     public ObservableList<JobRow> rows() {

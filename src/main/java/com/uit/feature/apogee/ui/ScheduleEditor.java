@@ -1,5 +1,6 @@
 package com.uit.feature.apogee.ui;
 
+import com.uit.feature.apogee.job.ExportSettings;
 import com.uit.feature.apogee.job.PartitionRule;
 import com.uit.feature.apogee.job.ScheduleFrequency;
 import com.uit.feature.apogee.job.ScheduleSlot;
@@ -14,6 +15,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
@@ -44,7 +46,8 @@ public final class ScheduleEditor {
             String scriptName,
             List<ScheduleSlot> current,
             List<TablespaceRule> conditions,
-            List<PartitionRule> partitions
+            List<PartitionRule> partitions,
+            ExportSettings export
     ) {
         Dialog<ScriptEdit> dialog = new Dialog<>();
         dialog.setTitle(scriptName);
@@ -91,6 +94,12 @@ public final class ScheduleEditor {
         if (partitions != null) {
             tabs.getTabs().add(partitionTab(partitions, partitionRows));
         }
+        TextField exportPath = new TextField();
+        TextField localPath = new TextField();
+        Spinner<Integer> exportSize = new Spinner<>(1, 999, export == null ? 15 : export.expectedGigabytes());
+        if (export != null) {
+            tabs.getTabs().add(exportTab(export, exportPath, exportSize, localPath));
+        }
         tabs.getStyleClass().add("settings-tabs");
         tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         tabs.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -121,7 +130,11 @@ public final class ScheduleEditor {
                     chosenPartitions.add(row.rule());
                 }
             }
-            return new ScriptEdit(chosen, chosenRules, chosenPartitions);
+            ExportSettings chosenExport = null;
+            if (export != null) {
+                chosenExport = new ExportSettings(exportPath.getText().trim(), exportSize.getValue(), localPath.getText().trim());
+            }
+            return new ScriptEdit(chosen, chosenRules, chosenPartitions, chosenExport);
         });
         return dialog.showAndWait();
     }
@@ -158,6 +171,37 @@ public final class ScheduleEditor {
         page.setPadding(new Insets(4, 0, 0, 0));
         VBox.setVgrow(scroll, Priority.ALWAYS);
         Tab tab = new Tab("Conditions", page);
+        tab.setClosable(false);
+        return tab;
+    }
+
+    private static Tab exportTab(ExportSettings export, TextField path, Spinner<Integer> size, TextField localPath) {
+        path.setText(export.path());
+        path.getStyleClass().add("condition-label");
+        size.setEditable(true);
+        size.setPrefWidth(90);
+        Label pathLabel = new Label("Folder in server");
+        pathLabel.getStyleClass().add("field-label");
+        Label sizeLabel = new Label("Expected size");
+        sizeLabel.getStyleClass().add("field-label");
+        Label sizeSubtitle = new Label("Expected file dmp of backup");
+        sizeSubtitle.getStyleClass().add("field-subtitle");
+        Label unit = new Label("GB");
+        unit.getStyleClass().add("condition-label");
+        HBox sizeRow = new HBox(8, size, unit);
+        sizeRow.setAlignment(Pos.CENTER_LEFT);
+        localPath.setText(export.localPath());
+        Label localLabel = new Label("Folder on this PC");
+        localLabel.getStyleClass().add("field-label");
+        Label localSubtitle = new Label("Where the downloaded dumps are kept, for example D:\\UIT backups");
+        localSubtitle.getStyleClass().add("field-subtitle");
+        localSubtitle.setWrapText(true);
+        VBox folder = new VBox(6, pathLabel, path);
+        VBox expected = new VBox(6, sizeLabel, sizeSubtitle, sizeRow);
+        VBox local = new VBox(6, localLabel, localSubtitle, localPath);
+        VBox page = new VBox(14, folder, expected, local);
+        page.setPadding(new Insets(8, 0, 0, 0));
+        Tab tab = new Tab("Export", page);
         tab.setClosable(false);
         return tab;
     }
